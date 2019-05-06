@@ -1,0 +1,6 @@
+Compile : Use the run command to create an OpenCL library.  
+          Would need to be regenerated if the tool version is changed. 
+
+Function : ulong get_time(ulong); 
+           Argument to function get_time is ignored in RTL, this is useful for creating false dependecies. 
+           Return value is a clock count from a free running timer, which get same clock and reset as kernel (refer documentation)

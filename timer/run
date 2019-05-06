@@ -1,0 +1,2 @@
+aoc -c timer.xml -o timer.aoco
+ aocl library create -o timer.aoclib timer.aoco
