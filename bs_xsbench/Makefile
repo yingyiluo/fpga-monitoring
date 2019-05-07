@@ -138,7 +138,7 @@ endif
 all : $(TARGET_DIR)/$(TARGET)
 
 $(TARGET_DIR)/$(TARGET) : Makefile $(SRCS) $(COMMON_SRC) $(INCS) $(TARGET_DIR)
-	$(ECHO)$(CC) $(CFLAGS) -DEMULATOR -fPIC $(foreach D,$(INC_DIRS),-I$D) \
+	$(ECHO)$(CC) $(CFLAGS) -fPIC $(foreach D,$(INC_DIRS),-I$D) \
 			$(AOCL_COMPILE_CONFIG) $(SRCS) $(COMMON_SRC) $(AOCL_LINK_CONFIG) \
 			$(foreach D,$(LIB_DIRS),-L$D) \
 			$(foreach L,$(LDFLAGS),$L) \
