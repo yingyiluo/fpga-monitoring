@@ -547,7 +547,7 @@ int main(int argc, char **argv) {
   double diff = end-start;
   double number_of_sims = (double)nr_sims * (double)NUM_THREADS * (double)N * (double)num_devices;
   printf("%d Devices ran a total of %lg Simulations\n", num_devices, number_of_sims);
-  printf("Total Time(sec) = %f\n", diff/1e9);
+  printf("Total Time(sec) = %.4f\n", diff*1e-9);
   printf("Throughput = %.2lf Billion Simulations / second\n", number_of_sims/diff);
   cleanup();
   return 0;

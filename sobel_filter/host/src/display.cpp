@@ -166,7 +166,7 @@ void filter()
         print_watch(watch_points);
 #endif 
   fps_raw = (1.0f / ((end - start) * 1e-9f));
-  printf("Total Time(sec) = %f\n", (end-start) * 1e-9f);
+  printf("Total Time(sec) = %.4f\n", (end-start) * 1e-9f);
   if (profile) {
     printf("Throughput: %f FPS\n", fps_raw);
   }

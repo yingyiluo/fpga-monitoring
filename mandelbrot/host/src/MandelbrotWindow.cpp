@@ -347,6 +347,7 @@ int mandelbrotWindowMainLoop()
     }
   }
 
+  printf("Total Time(sec) = %.4f\n", (float)(total_elapsed_time));
   printf("Total elapsed time: %f sec.\nAverage FPS: %f.\n", total_elapsed_time, testFrameCount / total_elapsed_time);
 
   // return success
