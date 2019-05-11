@@ -79,6 +79,7 @@ unsigned testThresholds[] = {32, 96, 128, 192, 225};
 #define NTHRESHOLDS (sizeof(testThresholds) / sizeof(testThresholds[0]))
 unsigned testFrameIndex = 0;
 int nTest = 4;
+double elapsedTime = 0.0;
 
 bool initSDL();
 void eventLoop();
@@ -96,6 +97,7 @@ void filter_cpu() {
   start = getCurrentTimestamp();
   sobel_cpu(input, output, ROWS * COLS, thresh);
   end = getCurrentTimestamp();
+  elapsedTime += end - start;
   if (profile)
     printf("Throughput: %f FPS\n", (1.0f / (end - start)));
     // Dump out frame data in PPM (ASCII).
@@ -108,6 +110,7 @@ void filter_cpu() {
     SDL_Event quitEvent;
     quitEvent.type = SDL_QUIT;
     SDL_PushEvent(&quitEvent);
+    printf("Elapsed Time: %f.\n", elapsedTime);
   }
 }
 
@@ -116,6 +119,7 @@ void filter()
   size_t sobelSize = 1;
   cl_int status;
   cl_event event;
+  double dstart = getCurrentTimestamp();
 #if USE_SVM_API == 0
   printf("[%f] write buffer start.\n", getCurrentTimestamp());
   status = clEnqueueWriteBuffer(queue, in_buffer, CL_FALSE, 0, sizeof(unsigned int) * ROWS * COLS, input, 0, NULL, &event);
@@ -166,7 +170,6 @@ void filter()
         print_watch(watch_points);
 #endif 
   fps_raw = (1.0f / ((end - start) * 1e-9f));
-  printf("Total Time(sec) = %.4f\n", (end-start) * 1e-9f);
   if (profile) {
     printf("Throughput: %f FPS\n", fps_raw);
   }
@@ -185,6 +188,8 @@ void filter()
       (void *)output, sizeof(unsigned int) * ROWS * COLS, 0, NULL, NULL);
   checkError(status, "Failed to map output");
 #endif /* USE_SVM_API == 0 */
+  double dend = getCurrentTimestamp();
+  elapsedTime += dend - dstart;
 
   if(testMode) {
     // Dump out frame data in PPM (ASCII).
@@ -197,6 +202,7 @@ void filter()
       SDL_Event quitEvent;
       quitEvent.type = SDL_QUIT;
       SDL_PushEvent(&quitEvent);
+      printf("Total Time(sec): %.4f\n", elapsedTime);
     }
   }
 
