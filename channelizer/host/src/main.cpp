@@ -72,6 +72,14 @@ static cl_kernel kernels[K_NUM_KERNELS];
 static cl_program program = NULL;
 static cl_int status = 0;
 
+cl_kernel*        debug_kernel;
+cl_command_queue*  debug_queue;
+stamp_t*           time_stamp;
+watch_s*           watch_points;
+std::string imageFilename;
+std::string aocxFilename;
+std::string deviceInfo;
+
 // Function prototypes
 bool init();
 void cleanup();
@@ -127,6 +135,8 @@ int main(int argc, char **argv) {
   if(!init()) {
     return false;
   }
+  // init debug
+  init_debug(context,program,device,&debug_kernel,&debug_queue);
   printf("Init complete!\n");
 
   // Allocate host memory
@@ -230,6 +240,22 @@ void test_channelizer(const int LOGN, const int P, const int PPC, const int ITER
   monitor_and_finish(queues[K_WRITER], fevent, stdout);
 
   time = getCurrentTimestamp() - time;
+
+#if NUM_DEBUG_POINTS > 0
+        //Read timer output from device
+        printf("Read the timers\n");
+        printf("main, num_debug_points ");
+        printf(" %d\n", NUM_DEBUG_POINTS);
+        read_debug_all_buffers(context,program,debug_kernel,debug_queue,&time_stamp);
+        print_debug(time_stamp);
+        reset_debug_all_buffers(debug_kernel,debug_queue);
+#endif //NUM_DEBUG_POINTS
+
+#if NUM_WATCH_POINTS > 0
+        printf("Read The Watch\n");
+        read_watch_all_buffers(context,debug_kernel,debug_queue,&watch_points);
+        print_watch(watch_points);
+#endif 
 
   printf("Total Time(sec) = %.4f\n", (float)(time));
   double gpoints_per_sec = ((double)(ITERS) * N / time) * 1E-9;

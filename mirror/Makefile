@@ -38,10 +38,10 @@ INCS := $(wildcard host/inc/*.h)
 SRCS := $(wildcard host/src/*.cpp ../common/src/AOCLUtils/*.cpp)
 LIBS := rt pthread
 
-DEBUG_AOCX_OUT := channelizer.aocx
-AOCX_OUT := channelizer.aocx
-KERNEL := device/channelizer.cl 
-AOC_FLAG := --report -g --profile -v --fp-relaxed --fpc
-AOCL_APP_FLAG := --fp-relaxed --fpc
+DEBUG_AOCX_OUT := mirror.aocx
+AOCX_OUT := mirror.aocx
+KERNEL := device/mirror.cl 
+AOC_FLAG := --report -g --profile -v
+AOCL_APP_FLAG := 
 
 include ../common/common.mk

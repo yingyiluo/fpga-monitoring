@@ -55,6 +55,7 @@ kernel void fft1d(uint count) {
   for (unsigned i = 0; i < count * (N / PPC) + N / PPC - 1u; i++) {
     // Fetch the input data from the input channel
     float2x8 data;
+    take_snapshot(0, 1);
     // Perform I/O transfers only when reading data in range
     if (i < count * (N / PPC)) {
       float8 data_in = read_channel_altera(FFT_IN);
